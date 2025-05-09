@@ -1,0 +1,44 @@
+---
+# tasks file for my_role
+- name: Task1 Install Apache
+  dnf:
+    name: "{{ SW }}"
+    state: present
+
+- name: Task2 Enable Apache
+  service:
+    name: "{{ SW }}"
+    state: started
+    enabled: yes
+
+- name: Task3 bk http configuration file
+  copy:
+    src: "{{ conf_src }}"
+    dest: "{{ bk_dest }}"
+    remote_src: yes
+
+- name: Task4 Change Apache Listen Port to 88
+  lineinfile:
+    path: "{{ conf_src }}"
+    regexp: '^Listen '
+    line: 'Listen "{{ listen_port }}"'
+
+- name: Task5 Allow Apache to Use Port 88 in SELinux
+  command: semanage port -m -t http_port_t -p tcp "{{ listen_port }}"
+  args:
+    warn: false
+  ignore_errors: true
+
+- name: Task6 Allow Port 88
+  firewalld:
+    port: 88/tcp
+    state: enabled
+    permanent: true
+    immediate: yes
+
+- name: Task8 upload website
+  copy:
+    src: ./index2.html
+    dest: /var/www/html/index.html
+
+

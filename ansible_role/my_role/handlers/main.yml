@@ -1,0 +1,7 @@
+---
+# handlers file for my_role
+- name: Restart http
+  service:
+    name: "{{ SW }}"
+    state: restarted
+
