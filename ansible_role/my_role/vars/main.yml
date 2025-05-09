@@ -1,8 +1,0 @@
----
-# vars file for my_role
-SW: httpd
-listen_port: 88
-conf_src: /etc/httpd/conf/httpd.conf
-bk_dest: /etc/httpd/conf/httpd.conf.bk
-
-
